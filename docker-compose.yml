@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  client:
+    build:
+      context: ./client
+    volumes:
+      - ./client:/app
+      - /app/node_modules/
+    env_file:
+      - .env
+  server:
+    build:
+      context: ./server
+    volumes:
+      - ./server:/app
+      - /app/node_modules/
+    env_file:
+      - .env
+  proxy:
+    image: nginx:1.21-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - client
+      - server
+
