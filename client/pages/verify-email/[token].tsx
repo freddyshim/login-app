@@ -7,7 +7,7 @@ interface VerifyEmailProps {
   verified: boolean
 }
 
-const VerifyEmail = ({ verified }: VerifyEmailProps) => {
+const VerifyEmailPage = ({ verified }: VerifyEmailProps) => {
   return verified ? <div>Yes</div> : <div>No</div>
 }
 
@@ -34,4 +34,4 @@ export const getServerSideProps: GetServerSideProps<VerifyEmailProps> = async ({
   }
 }
 
-export default VerifyEmail
+export default VerifyEmailPage
