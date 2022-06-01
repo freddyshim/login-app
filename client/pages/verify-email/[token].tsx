@@ -17,10 +17,10 @@ export const getServerSideProps: GetServerSideProps<VerifyEmailProps> = async ({
   const { token } = query
   try {
     await axios.patch('http://server:5000/auth/verify-email', {
-      verifyEmailToken: token,
+      token,
     })
   } catch (err) {
-    console.error(err)
+    axios.isAxiosError(err) && console.error(err.response?.data)
     return {
       props: {
         verified: false,
