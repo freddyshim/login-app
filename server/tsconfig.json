@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonJS",
+    "allowJs": true,
+    "checkJs": false,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": false
+  },
+  "exclude": ["./loginjs"]
+}

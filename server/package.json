@@ -2,9 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev:build": "tsc -w",
+    "dev:start": "nodemon dist/index.js",
+    "dev": "concurrently npm:dev:*"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,9 @@
     "login-express": "./loginjs"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "@types/cors": "^2.8.12",
+    "concurrently": "^7.2.1",
+    "nodemon": "^2.0.16",
+    "typescript": "^4.7.2"
   }
 }

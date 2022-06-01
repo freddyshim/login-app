@@ -1,7 +1,6 @@
-const express = require('express')
-const cors = require('cors')
-const { LoginExpress } = require('login-express')
-const cookieParser = require('cookie-parser')
+import express from 'express'
+import cors from 'cors'
+import { LoginExpress, AuthRequest } from 'login-express'
 
 // initialize express
 const app = express()
@@ -10,16 +9,15 @@ const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
-app.use(cookieParser())
 
 // intialize login-express
 const loginJS = new LoginExpress({
-  jwtSecret: process.env.SERVER_JWT_SECRET,
-  jwtResetSecret: process.env.SERVER_JWT_RESET_SECRET,
-  emailFromUser: process.env.SERVER_EMAIL_USER,
-  emailFromPass: process.env.SERVER_EMAIL_PASS,
-  emailHost: process.env.SERVER_EMAIL_HOST,
-  mongoDbUri: process.env.SERVER_MONGODB_URI,
+  jwtSecret: process.env.SERVER_JWT_SECRET || '',
+  jwtResetSecret: process.env.SERVER_JWT_RESET_SECRET || '',
+  emailFromUser: process.env.SERVER_EMAIL_USER || '',
+  emailFromPass: process.env.SERVER_EMAIL_PASS || '',
+  emailHost: process.env.SERVER_EMAIL_HOST || '',
+  mongoDbUri: process.env.SERVER_MONGODB_URI || '',
   clientBaseUrl: 'http://localhost',
 })
 
@@ -27,7 +25,7 @@ const loginJS = new LoginExpress({
 const router = express.Router()
 
 // get user
-router.get('/user', loginJS.isLoggedIn, (req, res) => {
+router.get('/user', loginJS.isLoggedIn, (req: AuthRequest, res) => {
   res.status(200).send(req.user)
 })
 
