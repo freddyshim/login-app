@@ -18,6 +18,8 @@ const loginJS = new LoginExpress({
   emailFromPass: process.env.SERVER_EMAIL_PASS || '',
   emailHost: process.env.SERVER_EMAIL_HOST || '',
   mongoDbUri: process.env.SERVER_MONGODB_URI || '',
+  mongoDbModelName: 'account',
+  mongoDbSchemaDefinition: {},
   clientBaseUrl: 'http://localhost',
 })
 
@@ -25,9 +27,14 @@ const loginJS = new LoginExpress({
 const router = express.Router()
 
 // get user
-router.get('/user', loginJS.isLoggedIn, (req: AuthRequest, res) => {
-  res.status(200).send(req.user)
-})
+router.get(
+  '/user',
+  loginJS.isLoggedIn,
+  loginJS.isAdmin,
+  (req: AuthRequest, res) => {
+    res.status(200).send(req.user)
+  }
+)
 
 // register
 router.post('/register', async (req, res) => {
@@ -45,6 +52,16 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body
   try {
     await loginJS.login({ res, email, password })
+    res.status(200).end()
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
+})
+
+// logout
+router.post('/logout', loginJS.isLoggedIn, async (req, res) => {
+  try {
+    loginJS.logout(res)
     res.status(200).end()
   } catch (err) {
     res.status(400).send(err.message)
