@@ -9,7 +9,7 @@ const ResetPasswordPage = () => {
 
   const requestReset = async () => {
     try {
-      const res = await axios.put('/api/auth/reset-password', { email })
+      const res = await axios.post('/api/auth/send-reset-password', { email })
       console.log(res.data)
     } catch (err) {
       axios.isAxiosError(err) && console.error(err.response?.data)

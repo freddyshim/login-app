@@ -4,9 +4,9 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const Home: NextPage = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [name, setName] = useState('Freddy Shim')
+  const [email, setEmail] = useState('freddy.shim@openscreen.com')
+  const [password, setPassword] = useState('asdfasdf')
 
   const register = async () => {
     await axios.post('/api/auth/register', { name, email, password })

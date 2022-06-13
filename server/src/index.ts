@@ -27,8 +27,13 @@ const loginJS = new LoginExpress({
 const router = express.Router()
 
 // get user
+router.get('/user', loginJS.isLoggedIn, (req: AuthRequest, res) => {
+  res.status(200).send(req.user)
+})
+
+// get user
 router.get(
-  '/user',
+  '/auth-test',
   loginJS.isLoggedIn,
   loginJS.isAdmin,
   (req: AuthRequest, res) => {
@@ -40,7 +45,7 @@ router.get(
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body
   try {
-    await loginJS.register({ name, email, password })
+    await loginJS.register(res, { name, email, password })
     res.status(200).end()
   } catch (err) {
     res.status(400).send(err.message)
@@ -51,7 +56,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
   try {
-    await loginJS.login({ res, email, password })
+    await loginJS.login(res, { email, password })
     res.status(200).end()
   } catch (err) {
     res.status(400).send(err.message)
@@ -68,6 +73,20 @@ router.post('/logout', loginJS.isLoggedIn, async (req, res) => {
   }
 })
 
+// send verification email
+router.post(
+  '/send-verify-email',
+  loginJS.isLoggedIn,
+  async (req: AuthRequest, res) => {
+    try {
+      await loginJS.sendVerificationEmail(req.user)
+      res.status(200).end()
+    } catch (err) {
+      res.status(400).send(err.message)
+    }
+  }
+)
+
 // verify email
 router.patch('/verify-email', async (req, res) => {
   const { token } = req.body
@@ -80,10 +99,10 @@ router.patch('/verify-email', async (req, res) => {
 })
 
 // request password change
-router.put('/reset-password', async (req, res) => {
+router.post('/send-reset-password', async (req, res) => {
   const { email } = req.body
   try {
-    await loginJS.resetPassword(email)
+    await loginJS.sendPasswordResetEmail(email)
     res.status(200).end()
   } catch (err) {
     res.status(400).send(err.message)

@@ -8,7 +8,20 @@ interface VerifyEmailProps {
 }
 
 const VerifyEmailPage = ({ verified }: VerifyEmailProps) => {
-  return verified ? <div>Yes</div> : <div>No</div>
+  return verified ? (
+    <div>Yes</div>
+  ) : (
+    <div>
+      <p>No</p>
+      <button
+        onClick={(e) => {
+          axios.post('/api/auth/send-verify-email')
+        }}
+      >
+        Resend Email
+      </button>
+    </div>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<VerifyEmailProps> = async ({
