@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { LoginExpress, AuthRequest } from 'login-express'
+import { connect, model, Schema } from 'mongoose'
 
 // initialize express
 const app = express()
@@ -10,6 +11,25 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
 
+// connect to db
+connect(process.env.SERVER_MONGODB_URI || '')
+
+// initialize ORM
+const accountSchema = new Schema({
+  // required fields
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  avatar: { type: String, default: '' },
+  verifyEmail: { type: Boolean, default: false },
+  verifyEmailToken: { type: [String], default: [] },
+  resetToken: { type: [String], default: [] },
+  auth: { type: String, default: 'USER' },
+  // example of custom field
+  customField: { type: String, default: 'initialValue' },
+})
+const accountModel = model('Account', accountSchema)
+
 // intialize login-express
 const loginJS = new LoginExpress({
   jwtSecret: process.env.SERVER_JWT_SECRET || '',
@@ -17,9 +37,7 @@ const loginJS = new LoginExpress({
   emailFromUser: process.env.SERVER_EMAIL_USER || '',
   emailFromPass: process.env.SERVER_EMAIL_PASS || '',
   emailHost: process.env.SERVER_EMAIL_HOST || '',
-  mongoDbUri: process.env.SERVER_MONGODB_URI || '',
-  mongoDbModelName: 'account',
-  mongoDbSchemaDefinition: {},
+  userModel: accountModel,
   clientBaseUrl: 'http://localhost',
 })
 
@@ -113,7 +131,7 @@ router.post('/send-reset-password', async (req, res) => {
 router.patch('/reset-password', async (req, res) => {
   const { resetToken, newPassword } = req.body
   try {
-    await loginJS.changePassword({ resetToken, newPassword })
+    await loginJS.changePassword(res, { resetToken, newPassword })
     res.status(200).end()
   } catch (err) {
     res.status(400).send(err.message)
