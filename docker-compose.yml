@@ -4,16 +4,16 @@ services:
     build:
       context: ./client
     volumes:
-      - ./client:/app
       - /app/node_modules/
+      - ./client:/app
     env_file:
       - .env
   server:
     build:
       context: ./server
     volumes:
-      - ./server:/app
       - /app/node_modules/
+      - ./server:/app
     env_file:
       - .env
   proxy:

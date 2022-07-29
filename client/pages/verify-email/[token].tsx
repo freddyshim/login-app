@@ -15,7 +15,9 @@ const VerifyEmailPage = ({ verified }: VerifyEmailProps) => {
       <p>No</p>
       <button
         onClick={(e) => {
-          axios.post('/api/auth/send-verify-email')
+          axios.post(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/send-verify-email`
+          )
         }}
       >
         Resend Email
