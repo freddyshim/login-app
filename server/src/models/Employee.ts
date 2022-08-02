@@ -10,7 +10,7 @@ export interface IEmployee {
   avatar: string;
   verifyEmail: boolean;
   verifyEmailToken: string[];
-  resetToken: string;
+  resetToken: string[];
   auth: AuthRole;
   firstName: string;
   lastName: string;
@@ -29,7 +29,7 @@ const employeeSchema = new Schema<IEmployee>(
     avatar: { type: String },
     verifyEmail: { type: Boolean, default: false },
     verifyEmailToken: [{ type: String }],
-    resetToken: { type: String },
+    resetToken: [{ type: String }],
     auth: { type: String, default: 'USER' },
     firstName: { type: String },
     lastName: { type: String },
