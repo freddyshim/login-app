@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const LogoutPage = () => {
   const logout = async () => {
-    const res = await axios.post('/api/auth/logout')
+    const res = await axios.post('/server/auth/logout');
     console.log(res)
   }
 
