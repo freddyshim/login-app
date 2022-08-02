@@ -15,10 +15,10 @@ const ChangePasswordPage = () => {
       return
     }
     console.log(token)
-    const res = await axios.patch('/api/auth/reset-password', {
+    const res = await axios.patch('/server/auth/reset-password', {
       resetToken: token,
       newPassword: password,
-    })
+    });
   }
 
   return (

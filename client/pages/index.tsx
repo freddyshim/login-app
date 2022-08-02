@@ -4,12 +4,12 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const Home: NextPage = () => {
-  const [name, setName] = useState('Freddy Shim')
-  const [email, setEmail] = useState('freddy.shim@openscreen.com')
-  const [password, setPassword] = useState('asdfasdf')
+  const [name, setName] = useState('Anis Merchant')
+  const [email, setEmail] = useState('anis.merchant@openscreen.com')
+  const [password, setPassword] = useState('asdfasdfasdf')
 
   const register = async () => {
-    await axios.post('/api/auth/register', { name, email, password })
+    await axios.post('/server/auth/register', { name, email, password, officeRole: 'Owner' })
   }
 
   return (
